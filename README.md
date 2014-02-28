@@ -2,7 +2,8 @@ Introduction
 ------------
 
 matcomcat is a Matlab package, intended (initially) as a demonstration of Matlab code
-used to search the ANSS ComCat Earthquake Catalog.  It currently consists of one class, LibComCat. 
+used to search the ANSS ComCat Earthquake Catalog.  It currently consists of one class, LibComCat, which
+is a wrapper around the ANSS ComCat search  <a href="http://comcat.cr.usgs.gov/fdsnws/event/1/">API</a>.
 
 Installation and Dependencies
 -----------------------------
