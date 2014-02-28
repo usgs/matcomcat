@@ -28,6 +28,16 @@ classdef LibComCat
     %             properties
     %             - geometry: Structure containing a field called
     %                'coordinates', a 3 element cell array of lat,lon,depth
+    % Usage:
+    % Retrieve all events greater than 5.5 in the last 30 days
+    % lbc = LibComCat();
+    % comevents = lbc.getEventData('starttime',now-30,'endtime',now,'minmag',5.5);
+    % for i=1:length(comevents)
+    %     [yr,mo,dy,hr,mi,se] = unixsecs2date(comevents{i}.properties.time/1000); %unix time stamp in ms
+    %     etimestr = datestr([yr mo dy hr mi se]);
+    %     fprintf('%s - %s\n',etimestr,comevents{i}.properties.title);
+    % end
+    
             
     properties (Access=private)
       baseurl
@@ -63,7 +73,8 @@ classdef LibComCat
             
             url = strrep(obj.baseurl,'[METHOD[?PARAMETERS]]','query');
             pstruct = getparamstruct(varargin);
-            params = {'format','geojson'};
+            params = {'format','geojson','orderby','time-asc'};
+            
             if isfield(pstruct,'starttime')
                 params{end+1} = 'starttime';
                 params{end+1} = datestr(pstruct.starttime,obj.TIMEFMT);
