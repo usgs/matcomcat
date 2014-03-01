@@ -45,7 +45,7 @@ Usage
 ------------
 <pre>This class is a wrapper around the ComCat search API:
  http://comcat.cr.usgs.gov/fdsnws/event/1/
- It provides several methods for retrieving data from ComCat.
+ It provides methods for retrieving data from ComCat.
  
   getCatalogs - Retrieve a cell array of available product catalogs.
   lbc = LibComCat();
@@ -64,12 +64,23 @@ Usage
              - xmax Maximum longitude (dec degrees)
              - ymin Minimum latitude (dec degrees)
              - ymax Maximum latitude (dec degrees)
+             - minmag Minimum magnitude
+             - maxmag Maximum magnitude
   Output:
-   - catalogs is a cell array of event structures, where
-              the fields are:
+   - events is a cell array of event structures, where
+              the interesting fields are:
               - id: Event id
               - properties: Structure with a set of event
               properties
               - geometry: Structure containing a field called
                  'coordinates', a 3 element cell array of lat,lon,depth
+  Usage:
+  Retrieve all events greater than 5.5 in the last 30 days
+  lbc = LibComCat();
+  comevents = lbc.getEventData('starttime',now-30,'endtime',now,'minmag',5.5);
+  for i=1:length(comevents)
+      [yr,mo,dy,hr,mi,se] = unixsecs2date(comevents{i}.properties.time/1000); %unix time stamp in ms
+      etimestr = datestr([yr mo dy hr mi se]);
+      fprintf('%s - %s\n',etimestr,comevents{i}.properties.title);
+  end
 </pre>

@@ -1,7 +1,7 @@
 classdef LibComCat
     %This class is a wrapper around the ComCat search API:
     %http://comcat.cr.usgs.gov/fdsnws/event/1/
-    %It provides several methods for retrieving data from ComCat.
+    %It provides methods for retrieving data from ComCat.
     %
     % getCatalogs - Retrieve a cell array of available product catalogs.
     % lbc = LibComCat();
@@ -20,9 +20,11 @@ classdef LibComCat
     %            - xmax Maximum longitude (dec degrees)
     %            - ymin Minimum latitude (dec degrees)
     %            - ymax Maximum latitude (dec degrees)
+    %            - minmag Minimum magnitude
+    %            - maxmag Maximum magnitude
     % Output:
-    %  - catalogs is a cell array of event structures, where
-    %             the fields are:
+    %  - events is a cell array of event structures, where
+    %             the interesting fields are:
     %             - id: Event id
     %             - properties: Structure with a set of event
     %             properties
