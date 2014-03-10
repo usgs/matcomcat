@@ -71,12 +71,21 @@ classdef LibComCat
                 delete(tmpfile);
             end
         end
-        function events = getEventData(obj,varargin)
-            
-            url = strrep(obj.baseurl,'[METHOD[?PARAMETERS]]','query');
-            pstruct = getparamstruct(varargin);
-            params = {'format','geojson','orderby','time-asc'};
-            
+        
+        function [ecount,maxcount] = getEventCount(obj,varargin)
+           url = strrep(obj.baseurl,'[METHOD[?PARAMETERS]]','count');
+           params = obj.parseParams(varargin);
+           params{end+1} = 'format';
+           params{end+1} = 'geojson';
+           data = urlread(url,'get',params);
+           jstruct = p_json(data);
+           ecount = jstruct.count;
+           maxcount = jstruct.maxAllowed;
+        end
+        
+        function params = parseParams(obj,varargin)
+            pstruct = getparamstruct(varargin{1});
+            params = {};
             if isfield(pstruct,'starttime')
                 params{end+1} = 'starttime';
                 params{end+1} = datestr(pstruct.starttime,obj.TIMEFMT);
@@ -109,6 +118,16 @@ classdef LibComCat
                 params{end+1} = 'maxmagnitude';
                 params{end+1} = num2str(pstruct.maxmag,'%.1f');
             end
+        end
+        
+        function events = getEventData(obj,varargin)
+            url = strrep(obj.baseurl,'[METHOD[?PARAMETERS]]','query');
+            params = obj.parseParams(varargin);
+            params{end+1} = 'format';
+            params{end+1} = 'geojson';
+            params{end+1} = 'orderby';
+            params{end+1} = 'time-asc';
+                        
             data = urlread(url,'get',params);
             jstruct = p_json(data);
             events = jstruct.features;
