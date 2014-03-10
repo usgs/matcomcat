@@ -9,6 +9,26 @@ classdef LibComCat
     % Output:
     %  - catalogs is a cell array of available product catalogs
     %
+    %
+    % getEventCount - Retrieve the number of events that would be returned from a given search.
+    % lbc = LibComCat();
+    % [nevents,maxallowed] = lbc.getEventCount(varargin);
+    % Input:
+    % - varargin is a list of parameters and values:
+    %            - starttime Matlab datenum object
+    %            - endtime   Matlab datenum object
+    %            - xmin Minimum longitude (dec degrees)
+    %            - xmax Maximum longitude (dec degrees)
+    %            - ymin Minimum latitude (dec degrees)
+    %            - ymax Maximum latitude (dec degrees)
+    %            - minmag Minimum magnitude
+    %            - maxmag Maximum magnitude
+    % Output:
+    % - nevents is the number of events that would be returned from this
+    % search.
+    % - maxallowed is the maximum number of events that can be returned
+    % from a single search.
+    
     % getEventData - Retrieve a cell array of event data from Comcat.
     % lbc = LibComCat();
     % events = lbc.getEventData(varargin);
