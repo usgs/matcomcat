@@ -26,11 +26,22 @@ function [data] = readcomcat(csvfile)
     tline = fgetl(fid);
     i = 1;
     while (ischar(tline))
-        try
-            parts = regexpi(tline,',','split');
-        catch
-            x = 1;
+        %need to deal with commas inside quotes of location string
+        cidx = strfind(tline,'"');
+        if rem(length(cidx),2)
+            fprintf('Can''t parse line "%s".  Skipping.\n',tline);
+            continue;
         end
+        newtline = tline(1:cidx(1)-1); %get the first unquoted segment
+        for i=1:length(cidx)-1
+            qstart = cidx(i);
+            qend = cidx(i+1);
+            segment = tline(qstart:qend);
+            segment = strrep(segment,',','#');
+            newtline = [newtline segment];
+        end
+        newtline = [newtline tline(cidx(end)+1:end)];
+        parts = regexpi(newtline,',','split');
         timestr = parts{1}(1:23);
         data(i).time = datenum(timestr,TIMEFMT);
         data(i).lat = str2double(parts{2});
@@ -45,7 +56,7 @@ function [data] = readcomcat(csvfile)
         data(i).net = parts{11};
         data(i).id = parts{12};
         data(i).updated = datenum(parts{13}(1:23),TIMEFMT);
-        data(i).place = parts{14};
+        data(i).place = strrep(strrep(parts{14},'#',','),'"','');
         data(i).type = parts{15};
         data(i) = data(i);
         i = i + 1;
