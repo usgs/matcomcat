@@ -70,7 +70,7 @@ classdef LibComCat
     methods
         function obj = LibComCat()
             %Create a LibComCat object
-            obj.baseurl = 'http://comcat.cr.usgs.gov/fdsnws/event/1/[METHOD[?PARAMETERS]]';
+            obj.baseurl = 'http://earthquake.usgs.gov/fdsnws/event/1/[METHOD[?PARAMETERS]]';
         end
         function catalogs = getCatalogs(obj)
             url = strrep(obj.baseurl,'[METHOD[?PARAMETERS]]','catalogs');
